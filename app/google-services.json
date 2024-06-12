@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1043434487186",
+    "project_id": "zestii",
+    "storage_bucket": "zestii.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1043434487186:android:734ba1599f688c94e7954b",
+        "android_client_info": {
+          "package_name": "com.example.zestii"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOtFqZDtVvTNU9r6rxItdXYc2VPlMVmrM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
