@@ -8,10 +8,10 @@
 	android:background="#FFFFFF">
 
 	<TextView
-		android:id="@+id/tvSignUpTitle"
+		android:id="@+id/tvLoginTitle"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="Sign Up"
+		android:text="Login"
 		android:textSize="24sp"
 		android:textStyle="bold"
 		android:layout_marginBottom="32dp"
@@ -41,17 +41,15 @@
 		android:textColor="#000000"
 		android:textColorHint="#CCCCCC"/>
 
-	<EditText
-		android:id="@+id/etConfirmPassword"
+	<Button
+		android:id="@+id/btnLogin"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:hint="Confirm Password"
-		android:inputType="textPassword"
-		android:layout_marginBottom="16dp"
-		android:padding="10dp"
-		android:background="@drawable/edittext_background"
-		android:textColor="#000000"
-		android:textColorHint="#CCCCCC"/>
+		android:text="Login"
+		android:padding="12dp"
+		android:background="@color/purple_500"
+		android:textColor="#FFFFFF"
+		android:layout_marginBottom="16dp"/>
 
 	<Button
 		android:id="@+id/btnSignUp"
@@ -61,4 +59,13 @@
 		android:padding="12dp"
 		android:background="@color/purple_500"
 		android:textColor="#FFFFFF"/>
+
+	<Button
+		android:id="@+id/btnForgotPassword"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Forgot Password?"
+		android:layout_marginBottom="32dp"
+		android:textColor="#000000"/>
+
 </LinearLayout>

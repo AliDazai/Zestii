@@ -13,21 +13,23 @@
         android:theme="@style/Theme.Zestii">
 
         <activity
-            android:name=".DashboardActivity"
-            android:exported="true" />
-
-        <activity
             android:name=".LoginActivity"
-            android:exported="true" />
-        <activity
-            android:name=".RegistrationActivity"
-            android:exported="true" />
-        <activity
-            android:name=".SplashActivity"
             android:exported="true" />
 
         <activity
             android:name=".MainPageActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="true" />
+
+        <activity android:name=".ResetPasswordActivity"
+            android:exported="true" />
+
+
+        <activity
+            android:name=".SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,4 +40,3 @@
     </application>
 
 </manifest>
-

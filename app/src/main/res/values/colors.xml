@@ -14,4 +14,9 @@
     <color name="btnedit">#2CA7E0</color>
     <color name="neutral">#0a1b97</color>
     <color name="colordrawer">#2B2C2E</color>
+        <color name="purple_500">#6200EE</color>
+        <color name="white">#FFFFFF</color>
+        <color name="black">#000000</color>
+        <color name="gray">#CCCCCC</color>
+
 </resources>
