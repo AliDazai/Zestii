@@ -1,25 +1,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/splash_scre"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:padding="16dp"
-	android:background="#ffd7ca">
-
-	<TextView
-		android:id="@+id/placeholderTextView"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="Zestii World !!"
-		android:textSize="50sp"
-		android:layout_centerHorizontal="true"
-		android:layout_marginTop="100dp"
-		android:textColor="#000000"/>
+	android:background="#FFD7CA"
+	android:clipToOutline="true">
 
 	<ImageView
-		android:id="@+id/placeholderImageView"
-		android:layout_width="377dp"
-		android:layout_height="246dp"
-		android:layout_below="@id/placeholderTextView"
-		android:layout_marginTop="80dp"
-		android:src="@drawable/ic_launcher_foreground" />
+		android:id="@+id/imageView"
+		android:layout_width="match_parent"
+		android:layout_height="200dp"
+		android:layout_centerVertical="true"/>
+
 
 </RelativeLayout>

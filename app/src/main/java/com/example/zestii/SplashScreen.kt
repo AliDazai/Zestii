@@ -14,8 +14,8 @@ class SplashScreen : AppCompatActivity() {
         setContentView(R.layout.activity_splash_screen)
 
         // Example usage of Glide
-        val placeholderImageView: ImageView = findViewById(R.id.placeholderImageView)
-        Glide.with(this).load(R.drawable.placeholder).into(placeholderImageView)
+        val placeholderImageView: ImageView = findViewById(R.id.imageView)
+        Glide.with(this).load(R.drawable.zestii_ani).into(placeholderImageView)
 
        //  Delay for a few seconds and then start the main activity
         Handler(Looper.getMainLooper()).postDelayed({

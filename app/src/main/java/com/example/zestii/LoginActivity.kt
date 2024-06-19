@@ -1,11 +1,14 @@
 package com.example.zestii
 
+
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
@@ -23,6 +26,8 @@ class LoginActivity : AppCompatActivity() {
         val loginButton = findViewById<Button>(R.id.btnLogin)
         val signUpButton = findViewById<Button>(R.id.btnSignUp)
         val forgotPasswordButton = findViewById<Button>(R.id.btnForgotPassword)
+        val placeholderImageView: ImageView = findViewById(R.id.imageView)
+        Glide.with(this).load(R.drawable.logo).into(placeholderImageView)
 
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString().trim()
@@ -40,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
                             // val intent = Intent(this, MainActivity::class.java)
                             // startActivity(intent)
                             // finish()
-                            val intent = Intent(this, MainPageActivity::class.java)
+                            val intent = Intent(this, MainActivity::class.java)
                             startActivity(intent)
                         } else {
                             // If sign in fails, display a message to the user.
