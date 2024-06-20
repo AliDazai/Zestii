@@ -1,15 +1,16 @@
 package com.example.zestii
 
-
 import PostAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +19,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var postAdapter: PostAdapter
     private lateinit var postList: MutableList<Post>
     private lateinit var db: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
+    private var currentUsername: String? = null
 
     companion object {
         const val CREATE_POST_REQUEST_CODE = 1
@@ -37,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = postAdapter
 
         db = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
 
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener {
@@ -44,7 +48,28 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(intent, CREATE_POST_REQUEST_CODE)
         }
 
+        loadCurrentUser()
         loadPostsFromDatabase()
+    }
+
+    private fun loadCurrentUser() {
+        val user = auth.currentUser
+        user?.let {
+            db.collection("users").whereEqualTo("email", it.email).get()
+                .addOnSuccessListener { documents ->
+                    if (documents.isEmpty) {
+                        Log.w(TAG, "No matching documents.")
+                        return@addOnSuccessListener
+                    }
+                    for (document in documents) {
+                        currentUsername = document.getString("username")
+                        Log.d(TAG, "Current username: $currentUsername")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting documents: ", exception)
+                }
+        }
     }
 
     private fun loadPostsFromDatabase() {
@@ -70,7 +95,8 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == CREATE_POST_REQUEST_CODE && resultCode == RESULT_OK) {
             val newPostContent = data?.getStringExtra("new_post_content")
             newPostContent?.let {
-                val newPost = Post("CurrentUser", it)
+                val username = currentUsername ?: "Unknown User"
+                val newPost = Post(username, it)
                 savePostToDatabase(newPost)
             }
         }
@@ -87,6 +113,7 @@ class MainActivity : AppCompatActivity() {
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error adding document", e)
+                Toast.makeText(this, "Error saving post", Toast.LENGTH_SHORT).show()
             }
     }
 }
