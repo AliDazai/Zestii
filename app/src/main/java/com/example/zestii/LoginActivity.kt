@@ -1,6 +1,5 @@
 package com.example.zestii
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -41,12 +40,9 @@ class LoginActivity : AppCompatActivity() {
                         if (task.isSuccessful) {
                             // Sign in success
                             Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
-                            // Proceed to next activity or logic
-                            // val intent = Intent(this, MainActivity::class.java)
-                            // startActivity(intent)
-                            // finish()
                             val intent = Intent(this, MainActivity::class.java)
                             startActivity(intent)
+                            finish() // Finish LoginActivity so it's removed from the back stack
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(this, "Authentication failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
