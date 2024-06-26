@@ -34,9 +34,10 @@
 				android:layout_gravity="center_horizontal"
 				android:paddingTop="20dp"
 				android:paddingBottom="40dp"
-				android:text="Sign Up"
+				android:text="Join the family today!"
 				android:textColor="#000000"
-				android:textSize="32sp" />
+				android:textSize="32sp"
+				android:fontFamily="@font/font1"/>
 
 			<!-- Input Fields -->
 			<EditText
@@ -47,16 +48,6 @@
 				android:background="@drawable/edittext_background"
 				android:padding="12dp"
 				android:layout_marginBottom="16dp" />
-
-			<EditText
-				android:id="@+id/etEmail"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:hint="E-mail"
-				android:background="@drawable/edittext_background"
-				android:padding="12dp"
-				android:layout_marginBottom="16dp"
-				android:inputType="textEmailAddress" />
 
 			<EditText
 				android:id="@+id/etPassword"
@@ -75,8 +66,18 @@
 				android:hint="Confirm Password"
 				android:background="@drawable/edittext_background"
 				android:padding="12dp"
-				android:layout_marginBottom="32dp"
+				android:layout_marginBottom="16dp"
 				android:inputType="textPassword" />
+
+			<EditText
+				android:id="@+id/etEmail"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="Enter E-mail ID"
+				android:background="@drawable/edittext_background"
+				android:padding="12dp"
+				android:layout_marginBottom="32dp"
+				android:inputType="textEmailAddress" />
 
 			<!-- Sign Up Button -->
 			<Button
@@ -92,4 +93,3 @@
 		</LinearLayout>
 	</ScrollView>
 </LinearLayout>
-

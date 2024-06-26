@@ -11,19 +11,23 @@
 	<TextView
 		android:id="@+id/tvLoginTitle"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_marginBottom="25dp"
-		android:text="Login"
-		android:textColor="#000000"
-		android:textSize="24sp"
-		android:textStyle="bold" />
+		android:layout_height="86dp"
+		android:layout_marginBottom="1dp"
+		android:fontFamily="@font/font1"
+		android:text="Welcome to"
+		android:textColor="#537952"
+		android:textSize="85sp"/>
 
 	<ImageView
 		android:id="@+id/imageView"
-		android:layout_width="match_parent"
-		android:layout_height="200dp"
-		android:layout_marginBottom="25dp"
-		android:src="@drawable/logo" />
+		android:layout_width="wrap_content"
+		android:layout_height="175dp"
+		android:layout_marginLeft="1dp"
+		android:layout_marginTop="1dp"
+		android:layout_marginEnd="1dp"
+		android:layout_marginRight="1dp"
+		android:layout_marginBottom="1dp"
+		android:src="@drawable/logo"/>
 
 	<EditText
 		android:id="@+id/etEmail"
@@ -35,7 +39,7 @@
 		android:padding="10dp"
 		android:background="@drawable/edittext_background"
 		android:textColor="#000000"
-		android:textColorHint="#CCCCCC" />
+		android:textColorHint="#CCCCCC"/>
 
 	<EditText
 		android:id="@+id/etPassword"
@@ -47,7 +51,7 @@
 		android:padding="10dp"
 		android:background="@drawable/edittext_background"
 		android:textColor="#000000"
-		android:textColorHint="#CCCCCC" />
+		android:textColorHint="#CCCCCC"/>
 
 	<Button
 		android:id="@+id/btnLogin"
@@ -57,17 +61,35 @@
 		android:padding="12dp"
 		android:background="@drawable/rounded_button_background"
 		android:textColor="#FFFFFF"
-		android:layout_marginBottom="16dp" />
+		android:layout_marginBottom="16dp"/>
 
-	<Button
-		android:id="@+id/btnSignUp"
+	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="Sign Up"
-		android:padding="12dp"
-		android:background="@drawable/rounded_button_background"
-		android:textColor="#FFFFFF"
-		android:layout_marginBottom="32dp" />
+		android:orientation="horizontal"
+		android:gravity="center_vertical">
+
+		<Button
+			android:id="@+id/btnSignUp"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="Sign Up"
+			android:padding="12dp"
+			android:background="@drawable/rounded_button_background"
+			android:textColor="#FFFFFF"
+			android:layout_marginEnd="8dp"/>
+
+		<com.google.android.gms.common.SignInButton
+			android:id="@+id/btnGoogleSignIn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
+			android:layout_marginStart="8dp"
+			android:layout_marginBottom="0dp"
+			android:colorScheme="light"
+			android:size="icon_only" />
+	</LinearLayout>
 
 	<Button
 		android:id="@+id/btnForgotPassword"
@@ -75,9 +97,9 @@
 		android:layout_height="wrap_content"
 		android:layout_marginTop="16dp"
 		android:layout_marginBottom="32dp"
-		android:background="@android:color/transparent"
+		android:background="@drawable/rounded_white_button_background"
 		android:padding="12dp"
 		android:text="Forgot Password?"
-		android:textColor="#000000" />
+		android:textColor="#000000"/>
 
 </LinearLayout>
