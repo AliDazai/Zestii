@@ -20,14 +20,14 @@
         <!-- Search Button -->
 
         <ImageButton
-            android:id="@+id/menuButton"
+            android:id="@+id/profileButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentStart="true"
             android:layout_marginStart="20dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:scaleType="centerInside"
-            android:src="@drawable/menu_bar" />
+            android:src="@drawable/account" />
 
         <ImageButton
             android:id="@+id/searchButton"
@@ -48,12 +48,14 @@
             android:layout_marginStart="90dp"
             android:layout_marginEnd="90dp"
             android:layout_toStartOf="@+id/searchButton"
-            android:layout_toEndOf="@+id/menuButton"
+            android:layout_toEndOf="@+id/profileButton"
             android:scaleType="centerInside"
             android:src="@drawable/logo" />
     </RelativeLayout>
 
     <!-- RecyclerView for posts -->
+
+    <!-- Bottom Navigation Buttons -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
@@ -62,7 +64,6 @@
         android:clipToPadding="false"
         android:padding="16dp" />
 
-    <!-- Bottom Navigation Buttons -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -76,6 +77,7 @@
             android:id="@+id/messagesButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginStart="20dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:nestedScrollingEnabled="false"
             android:padding="5dp"
@@ -86,30 +88,33 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- New Post Button (Floating Action Button) -->
+
+
+        <!-- Games Button -->
         <ImageButton
             android:id="@+id/newPostButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_marginStart="115dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/add_post"
             android:padding="0dp"
             android:scaleType="centerInside"
             android:src="@drawable/new_post"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/gamesButton"
             app:layout_constraintStart_toEndOf="@+id/messagesButton"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
-
-        <!-- Games Button -->
         <ImageButton
-            android:id="@+id/gamesButton"
+            android:id="@+id/menuButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginEnd="10dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="5dp"
             android:scaleType="centerInside"
-            android:src="@drawable/games"
+            android:src="@drawable/menu_bar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
