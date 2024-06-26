@@ -4,6 +4,7 @@ import PostAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,6 +47,12 @@ class MainActivity : AppCompatActivity() {
         fab.setOnClickListener {
             val intent = Intent(this, CreatePostActivity::class.java)
             startActivityForResult(intent, CREATE_POST_REQUEST_CODE)
+        }
+
+        val profileButton = findViewById<Button>(R.id.btnProfile)
+        profileButton.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
         }
 
         loadCurrentUser()
