@@ -17,6 +17,8 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var bioEditText: EditText
     private lateinit var dobEditText: EditText
     private lateinit var saveButton: Button
+    private var userId: String? = null
+    private var isCurrentUser: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,17 +32,27 @@ class ProfileActivity : AppCompatActivity() {
         dobEditText = findViewById(R.id.etDob)
         saveButton = findViewById(R.id.btnSave)
 
+        userId = intent.getStringExtra("USER_ID") ?: auth.currentUser?.uid
+        isCurrentUser = userId == auth.currentUser?.uid
+
+        if (!isCurrentUser) {
+            disableEditing()
+        }
+
         loadUserProfile()
 
         saveButton.setOnClickListener {
-            saveUserProfile()
+            if (isCurrentUser) {
+                saveUserProfile()
+            } else {
+                Toast.makeText(this, "You can only edit your own profile", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     private fun loadUserProfile() {
-        val user = auth.currentUser
-        user?.let {
-            db.collection("users").document(it.uid).get()
+        userId?.let {
+            db.collection("users").document(it).get()
                 .addOnSuccessListener { document ->
                     if (document.exists()) {
                         usernameEditText.setText(document.getString("username"))
@@ -55,22 +67,21 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun saveUserProfile() {
-        val user = auth.currentUser
-        user?.let {
+        userId?.let { id ->
             val username = usernameEditText.text.toString().trim()
             val bio = bioEditText.text.toString().trim()
             val dob = dobEditText.text.toString().trim()
 
             db.collection("users").whereEqualTo("username", username).get()
                 .addOnSuccessListener { documents ->
-                    if (documents.isEmpty || documents.documents[0].getString("email") == it.email) {
+                    if (documents.isEmpty || documents.documents[0].id == id) {
                         val userData = hashMapOf(
                             "username" to username,
                             "bio" to bio,
                             "dob" to dob
                         )
 
-                        db.collection("users").document(it.uid).set(userData)
+                        db.collection("users").document(id).set(userData)
                             .addOnSuccessListener {
                                 Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show()
                                 navigateToMainActivity()
@@ -86,6 +97,13 @@ class ProfileActivity : AppCompatActivity() {
                     Toast.makeText(this, "Error checking username: ${exception.message}", Toast.LENGTH_SHORT).show()
                 }
         }
+    }
+
+    private fun disableEditing() {
+        usernameEditText.isEnabled = false
+        bioEditText.isEnabled = false
+        dobEditText.isEnabled = false
+        saveButton.isEnabled = false
     }
 
     private fun navigateToMainActivity() {
