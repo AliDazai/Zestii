@@ -48,6 +48,12 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(intent, CREATE_POST_REQUEST_CODE)
         }
 
+        val searchButton = findViewById<ImageButton>(R.id.searchButton)
+        searchButton.setOnClickListener {
+            val intent = Intent(this, SearchActivity::class.java)
+            startActivity(intent)
+        }
+
         loadCurrentUser()
         loadPostsFromDatabase()
     }
