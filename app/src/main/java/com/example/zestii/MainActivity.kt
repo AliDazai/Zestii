@@ -53,6 +53,11 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, SearchActivity::class.java)
             startActivity(intent)
         }
+        val profileButton = findViewById<ImageButton>(R.id.profileButton)
+        profileButton.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
 
         loadCurrentUser()
         loadPostsFromDatabase()
