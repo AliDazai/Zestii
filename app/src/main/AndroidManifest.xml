@@ -39,6 +39,18 @@
         <activity android:name=".CreatePostActivity"
             android:exported="true" />
 
+        <activity android:name=".ProfileActivity"
+            android:exported="true" />
+
+        <activity android:name=".SearchActivity"
+            android:exported="true" />
+
+        <activity android:name=".ChatActivity"
+            android:exported="true" />
+
+        <activity android:name=".ConversationsActivity"
+            android:exported="true" />
+
     </application>
 
 </manifest>

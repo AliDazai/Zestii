@@ -48,6 +48,24 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(intent, CREATE_POST_REQUEST_CODE)
         }
 
+        val searchButton = findViewById<ImageButton>(R.id.searchButton)
+        searchButton.setOnClickListener {
+            val intent = Intent(this, SearchActivity::class.java)
+            startActivity(intent)
+        }
+
+        val profileButton = findViewById<ImageButton>(R.id.profileButton)
+        profileButton.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+
+        val messageButton = findViewById<ImageButton>(R.id.messagesButton)
+        messageButton.setOnClickListener{
+            val intent = Intent(this, ConversationsActivity::class.java)
+            startActivity(intent)
+        }
+
         loadCurrentUser()
         loadPostsFromDatabase()
     }
