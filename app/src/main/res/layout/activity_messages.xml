@@ -5,14 +5,14 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <EditText
-        android:id="@+id/searchField"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Search users" />
+        android:text="Messages"
+        android:textSize="20sp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewSearch"
+        android:id="@+id/recyclerViewMessages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

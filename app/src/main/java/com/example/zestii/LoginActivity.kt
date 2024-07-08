@@ -4,10 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
@@ -20,55 +18,36 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        val emailEditText = findViewById<EditText>(R.id.etEmail)
-        val passwordEditText = findViewById<EditText>(R.id.etPassword)
-        val loginButton = findViewById<Button>(R.id.btnLogin)
-        val signUpButton = findViewById<Button>(R.id.btnSignUp)
-        val forgotPasswordButton = findViewById<Button>(R.id.btnForgotPassword)
-        val placeholderImageView: ImageView = findViewById(R.id.imageView)
-        Glide.with(this).load(R.drawable.logo).into(placeholderImageView)
+        val emailField = findViewById<EditText>(R.id.emailField)
+        val passwordField = findViewById<EditText>(R.id.passwordField)
+        val loginButton = findViewById<Button>(R.id.loginButton)
+        val signUpButton = findViewById<Button>(R.id.signUpButton)
+        val resetPasswordButton = findViewById<Button>(R.id.resetPasswordButton)
 
         loginButton.setOnClickListener {
-            val email = emailEditText.text.toString().trim()
-            val password = passwordEditText.text.toString().trim()
+            val email = emailField.text.toString()
+            val password = passwordField.text.toString()
 
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show()
-            } else {
-                auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this) { task ->
-                        if (task.isSuccessful) {
-                            // Sign in success
-                            Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this, MainActivity::class.java)
-                            startActivity(intent)
-                            finish() // Finish LoginActivity so it's removed from the back stack
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(this, "Authentication failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                        }
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+                    } else {
+                        Toast.makeText(this, "Authentication Failed", Toast.LENGTH_SHORT).show()
                     }
+                }
+            } else {
+                Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show()
             }
         }
 
         signUpButton.setOnClickListener {
-            val intent = Intent(this, SignUpActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, SignUpActivity::class.java))
         }
 
-        forgotPasswordButton.setOnClickListener {
-            val intent = Intent(this, ResetPasswordActivity::class.java)
-            startActivity(intent)
+        resetPasswordButton.setOnClickListener {
+            startActivity(Intent(this, ResetPasswordActivity::class.java))
         }
-    }
-
-    private fun isValidEmail(email: String): Boolean {
-        // Simple regex for email validation
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
-
-    private fun isValidPassword(password: String): Boolean {
-        // Example: Password must be at least 6 characters
-        return password.length >= 6
     }
 }

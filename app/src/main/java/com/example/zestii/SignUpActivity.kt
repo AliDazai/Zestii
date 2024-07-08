@@ -2,6 +2,7 @@ package com.example.zestii
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -21,68 +22,58 @@ class SignUpActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        val emailEditText = findViewById<EditText>(R.id.etEmail)
-        val passwordEditText = findViewById<EditText>(R.id.etPassword)
-        val confirmPasswordEditText = findViewById<EditText>(R.id.etConfirmPassword)
-        val usernameEditText = findViewById<EditText>(R.id.etUsername)
-        val signUpButton = findViewById<Button>(R.id.btnSignUp)
+        val usernameField = findViewById<EditText>(R.id.usernameField)
+        val emailField = findViewById<EditText>(R.id.emailField)
+        val passwordField = findViewById<EditText>(R.id.passwordField)
+        val confirmPasswordField = findViewById<EditText>(R.id.confirmPasswordField)
+        val signUpButton = findViewById<Button>(R.id.signUpButton)
 
         signUpButton.setOnClickListener {
-            val email = emailEditText.text.toString().trim()
-            val password = passwordEditText.text.toString().trim()
-            val confirmPassword = confirmPasswordEditText.text.toString().trim()
-            val username = usernameEditText.text.toString().trim()
+            val username = usernameField.text.toString().trim()
+            val email = emailField.text.toString().trim()
+            val password = passwordField.text.toString().trim()
+            val confirmPassword = confirmPasswordField.text.toString().trim()
 
-            if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || username.isEmpty()) {
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
-            } else if (password != confirmPassword) {
+            if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (password != confirmPassword) {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
-            } else {
-                checkUsernameAndSignUp(email, password, username)
+                return@setOnClickListener
+            }
+
+            auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val user = hashMapOf(
+                        "username" to username,
+                        "email" to email
+                    )
+
+                    val currentUser = auth.currentUser
+                    if (currentUser != null) {
+                        db.collection("users").document(currentUser.uid)
+                            .set(user)
+                            .addOnSuccessListener {
+                                Toast.makeText(this, "Account Created Successfully", Toast.LENGTH_SHORT).show()
+                                Log.d("SignUpActivity", "Account created successfully for user: $username")
+                                startActivity(Intent(this, LoginActivity::class.java))
+                                finish()
+                            }
+                            .addOnFailureListener { e ->
+                                Toast.makeText(this, "Error creating user: ${e.message}", Toast.LENGTH_SHORT).show()
+                                Log.e("SignUpActivity", "Error creating user in Firestore: ${e.message}")
+                            }
+                    } else {
+                        Toast.makeText(this, "Error: Current user is null", Toast.LENGTH_SHORT).show()
+                        Log.e("SignUpActivity", "Error: Current user is null after sign-up")
+                    }
+                } else {
+                    Toast.makeText(this, "Sign Up Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    Log.e("SignUpActivity", "Sign Up Failed: ${task.exception?.message}")
+                }
             }
         }
-    }
-
-    private fun checkUsernameAndSignUp(email: String, password: String, username: String) {
-        db.collection("users").whereEqualTo("username", username).get()
-            .addOnSuccessListener { documents ->
-                if (documents.isEmpty) {
-                    signUpUser(email, password, username)
-                } else {
-                    Toast.makeText(this, "Username is already taken", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .addOnFailureListener { exception ->
-                Toast.makeText(this, "Error checking username: ${exception.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
-
-    private fun signUpUser(email: String, password: String, username: String) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    saveUserToFirestore(email, username)
-                } else {
-                    Toast.makeText(this, "Sign Up failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-    }
-
-    private fun saveUserToFirestore(email: String, username: String) {
-        val user = hashMapOf(
-            "email" to email,
-            "username" to username
-        )
-
-        db.collection("users").add(user)
-            .addOnSuccessListener {
-                Toast.makeText(this, "Sign Up successful", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error saving user: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
     }
 }

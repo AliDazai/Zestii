@@ -2,17 +2,20 @@ package com.example.zestii
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var db: FirebaseFirestore
-    private lateinit var searchEditText: EditText
-    private lateinit var searchButton: Button
+    private lateinit var searchAdapter: SearchAdapter
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,35 +23,45 @@ class SearchActivity : AppCompatActivity() {
 
         db = FirebaseFirestore.getInstance()
 
-        searchEditText = findViewById(R.id.etSearch)
-        searchButton = findViewById(R.id.btnSearch)
-
-        searchButton.setOnClickListener {
-            val searchQuery = searchEditText.text.toString().trim()
-            if (searchQuery.isNotEmpty()) {
-                searchUser(searchQuery)
-            } else {
-                Toast.makeText(this, "Please enter a username to search", Toast.LENGTH_SHORT).show()
-            }
+        val searchField = findViewById<EditText>(R.id.searchField)
+        recyclerView = findViewById(R.id.recyclerViewSearch)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        searchAdapter = SearchAdapter(mutableListOf()) { user ->
+            val intent = Intent(this, ProfileActivity::class.java)
+            intent.putExtra("userId", user.userId)
+            startActivity(intent)
         }
+        recyclerView.adapter = searchAdapter
+
+        searchField.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                searchUsers(s.toString())
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
     }
 
-    private fun searchUser(username: String) {
-        db.collection("users").whereEqualTo("username", username).get()
-            .addOnSuccessListener { documents ->
-                if (documents.isEmpty) {
-                    Toast.makeText(this, "No user found with that username", Toast.LENGTH_SHORT).show()
-                    return@addOnSuccessListener
+    private fun searchUsers(query: String) {
+        if (query.isNotEmpty()) {
+            db.collection("users")
+                .whereGreaterThanOrEqualTo("username", query)
+                .get()
+                .addOnSuccessListener { result ->
+                    val users = mutableListOf<User>()
+                    for (document in result) {
+                        val user = document.toObject(User::class.java)
+                        user.userId = document.id  // Set userId here
+                        users.add(user)
+                    }
+                    searchAdapter.updateUsers(users)
                 }
-                for (document in documents) {
-                    val userId = document.id
-                    val intent = Intent(this, ProfileActivity::class.java)
-                    intent.putExtra("USER_ID", userId)
-                    startActivity(intent)
+                .addOnFailureListener { e ->
+                    Log.e("SearchActivity", "Error searching users: ${e.message}")
                 }
-            }
-            .addOnFailureListener { exception ->
-                Toast.makeText(this, "Error searching user: ${exception.message}", Toast.LENGTH_SHORT).show()
-            }
+        } else {
+            searchAdapter.updateUsers(mutableListOf())
+        }
     }
 }

@@ -18,31 +18,25 @@ class ResetPasswordActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        val emailEditText = findViewById<EditText>(R.id.etEmail)
-        val resetPasswordButton = findViewById<Button>(R.id.btnResetPassword)
+        val emailField = findViewById<EditText>(R.id.emailField)
+        val resetPasswordButton = findViewById<Button>(R.id.resetPasswordButton)
 
         resetPasswordButton.setOnClickListener {
-            val email = emailEditText.text.toString().trim()
+            val email = emailField.text.toString()
 
-            if (email.isEmpty()) {
-                Toast.makeText(this, "Please enter your email", Toast.LENGTH_SHORT).show()
+            if (email.isNotEmpty()) {
+                auth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(this, "Password reset email sent", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this, LoginActivity::class.java))
+                        finish()
+                    } else {
+                        Toast.makeText(this, "Error sending reset email", Toast.LENGTH_SHORT).show()
+                    }
+                }
             } else {
-                resetPassword(email)
+                Toast.makeText(this, "Please enter your email", Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
-    private fun resetPassword(email: String) {
-        auth.sendPasswordResetEmail(email)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(this, "Password reset email sent", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    Toast.makeText(this, "Error: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
     }
 }

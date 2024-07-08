@@ -6,13 +6,15 @@
     android:padding="16dp">
 
     <EditText
-        android:id="@+id/searchField"
+        android:id="@+id/postContentField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Search users" />
+        android:hint="What's on your mind?"
+        android:maxLines="5" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewSearch"
+    <Button
+        android:id="@+id/postButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Post" />
 </LinearLayout>

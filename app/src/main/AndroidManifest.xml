@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.zestii">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
 
     <application
         android:allowBackup="true"
@@ -36,7 +38,7 @@
         <activity android:name=".ResetPasswordActivity"
             android:exported="true" />
 
-        <activity android:name=".CreatePostActivity"
+        <activity android:name=".ChatScreenActivity"
             android:exported="true" />
 
         <activity android:name=".ProfileActivity"
@@ -45,10 +47,10 @@
         <activity android:name=".SearchActivity"
             android:exported="true" />
 
-        <activity android:name=".ChatActivity"
+        <activity android:name=".NewPostActivity"
             android:exported="true" />
 
-        <activity android:name=".ConversationsActivity"
+        <activity android:name=".MessagesActivity"
             android:exported="true" />
 
     </application>

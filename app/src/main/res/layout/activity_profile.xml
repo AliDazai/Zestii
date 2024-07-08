@@ -1,45 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <EditText
-        android:id="@+id/etUsername"
+    <TextView
+        android:id="@+id/profileName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Username"
-        android:layout_marginBottom="16dp"
-        android:enabled="false" />
+        android:text="Username"
+        android:textSize="20sp" />
 
-    <EditText
-        android:id="@+id/etBio"
+    <TextView
+        android:id="@+id/profileBio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Bio"
-        android:layout_marginBottom="16dp"
-        android:enabled="false" />
+        android:text="Bio"
+        android:textSize="16sp" />
 
-    <EditText
-        android:id="@+id/etDob"
+    <TextView
+        android:id="@+id/profileBirthdate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Date of Birth (YYYY-MM-DD)"
-        android:layout_marginBottom="16dp"
-        android:enabled="false" />
+        android:text="Birthdate"
+        android:textSize="16sp" />
 
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/newUsername"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save"
+        android:hint="New Username"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/newBio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="New Bio"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/newBirthdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="New Birthdate"
         android:visibility="gone" />
 
     <Button
-        android:id="@+id/btnMessage"
-        android:layout_width="wrap_content"
+        android:id="@+id/editProfileButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Message" />
+        android:text="Edit Profile"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/startChatButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start Chat"
+        android:visibility="gone" />
 </LinearLayout>
