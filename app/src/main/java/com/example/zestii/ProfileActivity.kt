@@ -8,6 +8,8 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -15,6 +17,8 @@ class ProfileActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private lateinit var postAdapter: PostAdapter
+    private lateinit var recyclerView: RecyclerView
     private lateinit var userId: String
     private lateinit var currentUserId: String
 
@@ -30,6 +34,9 @@ class ProfileActivity : AppCompatActivity() {
         val profileBirthdate = findViewById<TextView>(R.id.profileBirthdate)
         val editProfileButton = findViewById<Button>(R.id.editProfileButton)
         val startChatButton = findViewById<Button>(R.id.startChatButton)
+        val newUsername = findViewById<EditText>(R.id.newUsername)
+        val newBio = findViewById<EditText>(R.id.newBio)
+        val newBirthdate = findViewById<EditText>(R.id.newBirthdate)
 
         val currentUser = auth.currentUser
         currentUserId = currentUser?.uid ?: throw IllegalStateException("User is not logged in")
@@ -40,23 +47,23 @@ class ProfileActivity : AppCompatActivity() {
             // Viewing own profile
             editProfileButton.visibility = View.VISIBLE
             editProfileButton.setOnClickListener {
-                val newUsername = findViewById<EditText>(R.id.newUsername).text.toString()
-                val newBio = findViewById<EditText>(R.id.newBio).text.toString()
-                val newBirthdate = findViewById<EditText>(R.id.newBirthdate).text.toString()
+                val updatedUsername = newUsername.text.toString()
+                val updatedBio = newBio.text.toString()
+                val updatedBirthdate = newBirthdate.text.toString()
 
                 val updates = hashMapOf<String, Any>(
-                    "username" to newUsername,
-                    "bio" to newBio,
-                    "birthdate" to newBirthdate
+                    "username" to updatedUsername,
+                    "bio" to updatedBio,
+                    "birthdate" to updatedBirthdate
                 )
 
                 db.collection("users").document(currentUserId)
                     .update(updates)
                     .addOnSuccessListener {
                         Toast.makeText(this, "Profile Updated", Toast.LENGTH_SHORT).show()
-                        profileName.text = newUsername
-                        profileBio.text = newBio
-                        profileBirthdate.text = newBirthdate
+                        profileName.text = updatedUsername
+                        profileBio.text = updatedBio
+                        profileBirthdate.text = updatedBirthdate
                     }
                     .addOnFailureListener {
                         Toast.makeText(this, "Error updating profile", Toast.LENGTH_SHORT).show()
@@ -77,6 +84,38 @@ class ProfileActivity : AppCompatActivity() {
                 profileBirthdate.text = document.getString("birthdate")
             }
         }
+
+        recyclerView = findViewById(R.id.recyclerViewUserPosts)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        postAdapter = PostAdapter(mutableListOf()) { post ->
+            // Handle comment click
+            val intent = Intent(this, CommentActivity::class.java)
+            intent.putExtra("postId", post.postId)
+            startActivity(intent)
+        }
+        recyclerView.adapter = postAdapter
+
+        loadUserPosts()
+    }
+
+    private fun loadUserPosts() {
+        db.collection("posts")
+            .whereEqualTo("userId", userId)
+            .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
+            .addSnapshotListener { snapshots, e ->
+                if (e != null || snapshots == null) {
+                    return@addSnapshotListener
+                }
+
+                val posts = mutableListOf<Post>()
+                for (document in snapshots.documents) {
+                    val post = document.toObject(Post::class.java)
+                    if (post != null) {
+                        posts.add(post)
+                    }
+                }
+                postAdapter.updatePosts(posts)
+            }
     }
 
     private fun startChatWithUser(userId: String) {

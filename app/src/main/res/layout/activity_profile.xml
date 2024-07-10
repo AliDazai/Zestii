@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,55 +10,64 @@
         android:id="@+id/profileName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Username"
-        android:textSize="20sp" />
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:paddingBottom="8dp"/>
 
     <TextView
         android:id="@+id/profileBio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Bio"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:paddingBottom="8dp"/>
 
     <TextView
         android:id="@+id/profileBirthdate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Birthdate"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:paddingBottom="8dp"/>
 
     <EditText
         android:id="@+id/newUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="New Username"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:layout_marginBottom="8dp"/>
 
     <EditText
         android:id="@+id/newBio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="New Bio"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:layout_marginBottom="8dp"/>
 
     <EditText
         android:id="@+id/newBirthdate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="New Birthdate"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:layout_marginBottom="8dp"/>
 
     <Button
         android:id="@+id/editProfileButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Edit Profile"
-        android:visibility="gone" />
+        android:text="Edit Profile"/>
 
     <Button
         android:id="@+id/startChatButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Start Chat"
-        android:visibility="gone" />
+        android:text="Message"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewUserPosts"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="16dp"/>
 </LinearLayout>
