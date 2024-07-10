@@ -1,3 +1,10 @@
 package com.example.zestii
 
-data class Message(val content: String = "", val senderId: String = "")
+import java.util.Date
+
+data class Message(
+    val content: String = "",
+    val senderId: String = "",
+    val timestamp: Date = Date()
+)
+

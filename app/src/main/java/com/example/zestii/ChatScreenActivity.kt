@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import java.util.*
+import java.util.Date
 
 class ChatScreenActivity : AppCompatActivity() {
 
@@ -40,10 +40,10 @@ class ChatScreenActivity : AppCompatActivity() {
             val userId = auth.currentUser?.uid
 
             if (messageContent.isNotEmpty() && userId != null) {
-                val message = hashMapOf(
-                    "content" to messageContent,
-                    "senderId" to userId,
-                    "timestamp" to Date()
+                val message = Message(
+                    content = messageContent,
+                    senderId = userId,
+                    timestamp = Date()
                 )
 
                 db.collection("chats").document(chatId).collection("messages").add(message)
