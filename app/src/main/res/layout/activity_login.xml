@@ -65,11 +65,13 @@
         android:layout_marginBottom="16dp"/>
 
     <Button
-    android:id="@+id/resetPasswordButton"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/rounded_button_background"
-        android:text="Forgot Password?" />
+        android:id="@+id/resetPasswordButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_button_background"
+        android:text="Forgot Password?"
+        android:textColor="#FFFFFF" />
+
 </LinearLayout>
 
 
