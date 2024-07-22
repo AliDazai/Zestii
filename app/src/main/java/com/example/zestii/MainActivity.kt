@@ -1,8 +1,8 @@
 package com.example.zestii
 
 import android.content.Intent
+import android.widget.ImageButton
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,10 +23,10 @@ class MainActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        val newPostButton = findViewById<Button>(R.id.newPostButton)
-        val profilePageButton = findViewById<Button>(R.id.profilePageButton)
-        val messagesButton = findViewById<Button>(R.id.messagesButton)
-        val searchButton = findViewById<Button>(R.id.searchButton)
+        val newPostButton = findViewById<ImageButton>(R.id.newPostButton)
+        val profilePageButton = findViewById<ImageButton>(R.id.profilePageButton)
+        val messagesButton = findViewById<ImageButton>(R.id.messagesButton)
+        val searchButton = findViewById<ImageButton>(R.id.searchButton)
 
         newPostButton.setOnClickListener {
             startActivity(Intent(this, CreatePostActivity::class.java))

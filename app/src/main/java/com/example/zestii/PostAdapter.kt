@@ -54,7 +54,7 @@ class PostAdapter(
             likeCount.text = post.likes.size.toString()
 
             likeButton.setImageResource(
-                if (post.likes.contains(auth.currentUser?.uid)) R.drawable.ic_like else R.drawable.ic_like
+                if (post.likes.contains(auth.currentUser?.uid)) R.drawable.ic_like else R.drawable.ic_like_outline
             )
 
             likeButton.setOnClickListener {
