@@ -1,5 +1,6 @@
 package com.example.zestii
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -70,6 +71,12 @@ class PostAdapter(
 
             commentButton.setOnClickListener {
                 onCommentClick(post)
+            }
+
+            postUsername.setOnClickListener {
+                val intent = Intent(itemView.context, ProfileActivity::class.java)
+                intent.putExtra("userId", post.userId)
+                itemView.context.startActivity(intent)
             }
         }
     }

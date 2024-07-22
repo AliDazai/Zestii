@@ -46,6 +46,7 @@ class ProfileActivity : AppCompatActivity() {
         if (userId == currentUserId) {
             // Viewing own profile
             editProfileButton.visibility = View.VISIBLE
+            startChatButton.visibility = View.GONE
             editProfileButton.setOnClickListener {
                 val updatedUsername = newUsername.text.toString()
                 val updatedBio = newBio.text.toString()
@@ -71,6 +72,7 @@ class ProfileActivity : AppCompatActivity() {
             }
         } else {
             // Viewing someone else's profile
+            editProfileButton.visibility = View.GONE
             startChatButton.visibility = View.VISIBLE
             startChatButton.setOnClickListener {
                 startChatWithUser(userId)
