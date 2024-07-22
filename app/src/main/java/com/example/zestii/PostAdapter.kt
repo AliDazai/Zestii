@@ -49,7 +49,6 @@ class PostAdapter(
 
         fun bind(post: Post, onCommentClick: (Post) -> Unit) {
             postContent.text = post.content
-            postUsername.text = post.username
             postTimestamp.text = SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault()).format(post.timestamp)
             likeCount.text = post.likes.size.toString()
 
@@ -73,10 +72,15 @@ class PostAdapter(
                 onCommentClick(post)
             }
 
-            postUsername.setOnClickListener {
-                val intent = Intent(itemView.context, ProfileActivity::class.java)
-                intent.putExtra("userId", post.userId)
-                itemView.context.startActivity(intent)
+            db.collection("users").document(post.userId).get().addOnSuccessListener { document ->
+                if (document != null) {
+                    postUsername.text = document.getString("username") ?: "Unknown"
+                    postUsername.setOnClickListener {
+                        val intent = Intent(itemView.context, ProfileActivity::class.java)
+                        intent.putExtra("userId", post.userId)
+                        itemView.context.startActivity(intent)
+                    }
+                }
             }
         }
     }

@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FieldValue // Add this import
 import java.util.Date
 
 class CommentActivity : AppCompatActivity() {
@@ -26,48 +25,67 @@ class CommentActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        postId = intent.getStringExtra("postId") ?: ""
+        postId = intent.getStringExtra("postId") ?: throw IllegalArgumentException("Post ID is missing")
 
         recyclerView = findViewById(R.id.recyclerViewComments)
         recyclerView.layoutManager = LinearLayoutManager(this)
         commentAdapter = CommentAdapter(mutableListOf())
         recyclerView.adapter = commentAdapter
 
-        val commentField = findViewById<EditText>(R.id.commentField)
+        loadComments()
+
+        val commentEditText = findViewById<EditText>(R.id.commentEditText)
         val postCommentButton = findViewById<Button>(R.id.postCommentButton)
 
         postCommentButton.setOnClickListener {
-            val commentContent = commentField.text.toString().trim()
-            val userId = auth.currentUser?.uid
-            val username = auth.currentUser?.displayName ?: "Unknown"
-
-            if (commentContent.isEmpty()) {
-                return@setOnClickListener
-            }
-
-            if (userId != null) {
-                val comment = Comment(
-                    userId = userId,
-                    username = username,
-                    content = commentContent,
-                    timestamp = Date()
-                )
-
-                db.collection("posts").document(postId).update("comments", FieldValue.arrayUnion(comment))
-                commentField.text.clear()
+            val commentContent = commentEditText.text.toString().trim()
+            if (commentContent.isNotEmpty()) {
+                postComment(commentContent)
+                commentEditText.text.clear()
             }
         }
+    }
 
-        loadComments()
+    private fun postComment(content: String) {
+        val currentUser = auth.currentUser ?: return
+        val userId = currentUser.uid
+        val username = currentUser.displayName ?: "Unknown"  // Assuming username is stored in displayName for simplicity
+
+        val comment = Comment(
+            commentId = db.collection("comments").document().id,
+            postId = postId,
+            userId = userId,
+            username = username,
+            content = content,
+            timestamp = Date()
+        )
+
+        db.collection("comments").document(comment.commentId).set(comment)
+            .addOnSuccessListener {
+                loadComments()  // Reload comments after posting
+            }
+            .addOnFailureListener {
+                // Handle failure if needed
+            }
     }
 
     private fun loadComments() {
-        db.collection("posts").document(postId).get().addOnSuccessListener { document ->
-            val post = document.toObject(Post::class.java)
-            if (post != null) {
-                commentAdapter.updateComments(post.comments)
+        db.collection("comments")
+            .whereEqualTo("postId", postId)
+            .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
+            .addSnapshotListener { snapshots, e ->
+                if (e != null || snapshots == null) {
+                    return@addSnapshotListener
+                }
+
+                val comments = mutableListOf<Comment>()
+                for (document in snapshots.documents) {
+                    val comment = document.toObject(Comment::class.java)
+                    if (comment != null) {
+                        comments.add(comment)
+                    }
+                }
+                commentAdapter.updateComments(comments)
             }
-        }
     }
 }
-
